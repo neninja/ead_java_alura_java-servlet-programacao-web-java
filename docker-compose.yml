@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  java:
+    image: maven:3.6.3-jdk-8
+    volumes:
+      - .:/usr/src
+      - ./webapps:/usr/src/app/target
+    working_dir: /usr/src
+    command: tail -f /dev/null  # Mantém o contêiner em execução
+    depends_on:
+      - tomcat
+
+  tomcat:
+    image: tomcat:8-jre8
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./WebContent:/usr/local/tomcat/webapps/ROOT
+    environment:
+      - JAVA_OPTS=-Djava.security.egd=file:/dev/./urandom
